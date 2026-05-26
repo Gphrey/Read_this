@@ -1,0 +1,7 @@
+target/
+src-tauri/target/
+dist/
+node_modules/
+*.log
+python_deps/
+edge_probe.mp3

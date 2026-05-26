@@ -1,0 +1,24 @@
+[package]
+name = "read-this"
+version = "0.1.0"
+description = "Read highlighted text aloud with Edge TTS"
+authors = ["Godfrey"]
+edition = "2024"
+
+[[bin]]
+name = "read-this"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2.5.4", features = [] }
+
+[dependencies]
+base64 = "0.22.1"
+clipboard-win = "5.4.1"
+msedge-tts = { path = "../vendor/msedge-tts" }
+rodio = { version = "0.22.2", default-features = false, features = ["playback", "mp3"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tauri = { version = "2.11.2", features = ["tray-icon"] }
+tauri-plugin-global-shortcut = "2.3.1"
+windows-sys = { version = "0.61.2", features = ["Win32_UI_Input_KeyboardAndMouse"] }

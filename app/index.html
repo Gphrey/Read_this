@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Read This</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar">
+        <div>
+          <h1>Read This</h1>
+          <p id="statusText">Starting...</p>
+        </div>
+        <span id="statusPill" class="pill">Idle</span>
+      </section>
+
+      <section class="controls" aria-label="Playback controls">
+        <button id="readBtn" class="primary">Read highlighted text</button>
+        <button id="stopBtn">Stop</button>
+        <button id="testBtn">Test voice</button>
+      </section>
+
+      <section class="settings" aria-label="Settings">
+        <label>
+          <span>Voice</span>
+          <select id="voiceSelect"></select>
+        </label>
+
+        <label>
+          <span>Speed</span>
+          <input id="rateInput" type="range" min="-50" max="80" step="5" />
+          <output id="rateOutput"></output>
+        </label>
+
+        <label>
+          <span>Volume</span>
+          <input id="volumeInput" type="range" min="0" max="100" step="5" />
+          <output id="volumeOutput"></output>
+        </label>
+
+        <label class="check">
+          <input id="fallbackInput" type="checkbox" />
+          <span>Use local voice if Edge TTS is unavailable</span>
+        </label>
+
+        <label class="check">
+          <input id="startMinimizedInput" type="checkbox" />
+          <span>Start minimized to tray</span>
+        </label>
+      </section>
+
+      <section class="meta">
+        <div>
+          <span>Shortcut</span>
+          <strong id="hotkeyText">Ctrl+Alt+R</strong>
+        </div>
+        <div>
+          <span>Engine</span>
+          <strong>Edge TTS</strong>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

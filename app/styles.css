@@ -1,0 +1,170 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f3f5f7;
+  color: #16212f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 420px;
+}
+
+.shell {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  display: grid;
+  gap: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+p {
+  margin: 5px 0 0;
+  color: #53606f;
+  line-height: 1.4;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dfe7ef;
+  color: #243244;
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.pill.reading {
+  background: #d8f1df;
+  color: #174f2b;
+}
+
+.pill.error {
+  background: #ffe0dd;
+  color: #8f1d16;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 96px 112px;
+  gap: 10px;
+}
+
+button {
+  height: 40px;
+  border: 1px solid #cbd4df;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #182334;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f8fafc;
+}
+
+button.primary {
+  background: #176b87;
+  border-color: #176b87;
+  color: #ffffff;
+}
+
+button.primary:hover {
+  background: #125872;
+}
+
+.settings {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #d9e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #334255;
+}
+
+select,
+input[type="range"] {
+  width: 100%;
+}
+
+select {
+  height: 36px;
+  border: 1px solid #cbd4df;
+  border-radius: 7px;
+  padding: 0 10px;
+  background: #ffffff;
+  color: #16212f;
+}
+
+output {
+  color: #667386;
+  font-weight: 500;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.35;
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.meta div {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid #d9e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.meta span {
+  color: #697789;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.meta strong {
+  font-size: 14px;
+}

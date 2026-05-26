@@ -1,0 +1,11 @@
+{
+  "name": "read-this",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tauri": "cargo tauri"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
