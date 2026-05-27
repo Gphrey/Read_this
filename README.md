@@ -227,9 +227,3 @@ The original tray prototype is still available:
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -File .\ReadThis.ps1
 ```
-
-## Research References
-
-- GitHub recommends README files clearly explain what the project does, why it is useful, how to get started, where to get help, and who maintains it.
-- GitHub Actions artifacts are the standard way to publish build outputs from workflow runs.
-- Tauri's Windows distribution guidance recommends building Windows installers and executables on Windows runners.
