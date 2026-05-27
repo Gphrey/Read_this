@@ -4,7 +4,7 @@ Readtis is a small Windows tray app that reads highlighted text aloud with natur
 
 It is built for the ordinary moment where a chat reply, email, document, or long response is worth hearing instead of staring at. Highlight the text, press `Ctrl+Alt+R`, and let Readtis read it once from beginning to end.
 
-![Readtis logo](docs/assets/readtis-logo.png)
+![Readtis app screen](docs/assets/readtis-panel.png)
 
 ## Features
 
@@ -75,23 +75,19 @@ What Readtis handles temporarily:
 
 Readtis does not intentionally save highlighted text, generated speech audio, or reading history. If the app or operating system crashes during a read, temporary OS files may remain until cleaned by Windows or deleted manually.
 
-## Adding Screenshots And Video
+## Screenshots And Video
 
 Keep README media in `docs/assets/` so links stay stable on GitHub.
 
 ### Screenshot
 
-Save your screenshot as:
+The current app screenshot is stored at:
 
 ```text
 docs/assets/readtis-panel.png
 ```
 
-Then add it to the README:
-
-```markdown
 ![Readtis control panel](docs/assets/readtis-panel.png)
-```
 
 ### Animated Demo
 
@@ -111,25 +107,19 @@ Then embed it:
 
 GitHub README pages are most reliable when videos are linked from a thumbnail instead of embedded directly.
 
-Save a thumbnail:
-
-```text
-docs/assets/readtis-video-cover.png
-```
-
-Save or upload the video as:
+The current video demo is stored at:
 
 ```text
 docs/assets/readtis-demo.mp4
 ```
 
-Then add:
+Open the demo video:
 
 ```markdown
-[![Watch the Readtis demo](docs/assets/readtis-video-cover.png)](docs/assets/readtis-demo.mp4)
+[Watch the Readtis demo](docs/assets/readtis-demo.mp4)
 ```
 
-For a more polished public repo, upload the video to a GitHub Release, YouTube, or Loom, then link the thumbnail to that URL.
+For a more polished public repo, upload the video to a GitHub Release, YouTube, or Loom, then link a thumbnail to that URL.
 
 ## Build Locally
 
