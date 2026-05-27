@@ -20,7 +20,8 @@ use serde::{Deserialize, Serialize};
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::TrayIconBuilder,
-    AppHandle, Emitter, Manager, State, WindowEvent,
+    AppHandle, Emitter, Manager, PhysicalPosition, State, WebviewUrl, WebviewWindowBuilder,
+    WindowEvent,
 };
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, ShortcutState};
 use windows_sys::Win32::UI::Input::KeyboardAndMouse::{
@@ -39,6 +40,8 @@ struct AppSettings {
     hotkey: String,
     enable_local_fallback: bool,
     start_minimized: bool,
+    #[serde(default)]
+    has_completed_onboarding: bool,
 }
 
 impl Default for AppSettings {
@@ -50,6 +53,7 @@ impl Default for AppSettings {
             hotkey: DEFAULT_HOTKEY.to_string(),
             enable_local_fallback: false,
             start_minimized: true,
+            has_completed_onboarding: false,
         }
     }
 }
@@ -122,6 +126,7 @@ fn main() {
             });
             app.manage(state);
 
+            create_indicator_window(app.handle())?;
             create_tray(app.handle())?;
             if let Err(error) = register_shortcuts(app.handle()) {
                 let state = app.state::<Arc<AppState>>().inner().clone();
@@ -135,7 +140,7 @@ fn main() {
             }
             start_hotkey_polling(app.handle().clone());
 
-            if !settings.start_minimized {
+            if !settings.has_completed_onboarding || !settings.start_minimized {
                 show_main_window(app.handle());
             }
 
@@ -152,11 +157,12 @@ fn main() {
             stop_reading,
             test_voice,
             list_voices,
+            get_status,
             get_settings,
             save_settings
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Read This");
+        .expect("error while running Readtis");
 }
 
 fn create_tray(app: &AppHandle) -> tauri::Result<()> {
@@ -172,7 +178,7 @@ fn create_tray(app: &AppHandle) -> tauri::Result<()> {
     let mut tray = TrayIconBuilder::with_id("main")
         .menu(&menu)
         .show_menu_on_left_click(true)
-        .tooltip("Read This");
+        .tooltip("Readtis");
 
     if let Some(icon) = icon {
         tray = tray.icon(icon);
@@ -217,6 +223,72 @@ fn show_main_window(app: &AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
         let _ = window.show();
         let _ = window.set_focus();
+    }
+}
+
+fn create_indicator_window(app: &AppHandle) -> tauri::Result<()> {
+    let window = WebviewWindowBuilder::new(
+        app,
+        "indicator",
+        WebviewUrl::App("indicator.html".into()),
+    )
+    .title("Readtis")
+    .inner_size(320.0, 86.0)
+    .resizable(false)
+    .decorations(false)
+    .always_on_top(true)
+    .skip_taskbar(true)
+    .transparent(true)
+    .visible(false)
+    .build()?;
+    position_indicator_window(app, &window);
+    Ok(())
+}
+
+fn position_indicator_window(app: &AppHandle, window: &tauri::WebviewWindow) {
+    let Ok(Some(monitor)) = app.primary_monitor() else {
+        return;
+    };
+    let area = monitor.work_area();
+    let x = area.position.x + area.size.width as i32 - 340;
+    let y = area.position.y + area.size.height as i32 - 112;
+    let _ = window.set_position(PhysicalPosition::new(x.max(area.position.x), y.max(area.position.y)));
+}
+
+fn update_indicator_window(app: &AppHandle, status: &ReadStatus) {
+    let Some(window) = app.get_webview_window("indicator") else {
+        return;
+    };
+
+    match status.state.as_str() {
+        "FetchingVoice" | "Reading" => {
+            position_indicator_window(app, &window);
+            let _ = window.show();
+            let _ = window.set_always_on_top(true);
+        }
+        "Error" => {
+            position_indicator_window(app, &window);
+            let _ = window.show();
+            let app_handle = app.clone();
+            let message = status.message.clone();
+            thread::spawn(move || {
+                thread::sleep(Duration::from_secs(4));
+                let state = app_handle.state::<Arc<AppState>>().inner().clone();
+                let should_hide = state
+                    .status
+                    .lock()
+                    .map(|current| current.state == "Error" && current.message == message)
+                    .unwrap_or(false);
+                if should_hide {
+                    if let Some(window) = app_handle.get_webview_window("indicator") {
+                        let _ = window.hide();
+                    }
+                }
+            });
+        }
+        _ => {
+            let _ = window.hide();
+        }
     }
 }
 
@@ -290,6 +362,15 @@ fn get_settings(state: State<'_, Arc<AppState>>) -> Result<AppSettings, String> 
 }
 
 #[tauri::command]
+fn get_status(state: State<'_, Arc<AppState>>) -> Result<ReadStatus, String> {
+    state
+        .status
+        .lock()
+        .map(|status| status.clone())
+        .map_err(|_| "Could not read status.".to_string())
+}
+
+#[tauri::command]
 fn save_settings(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
@@ -316,7 +397,7 @@ fn read_selection_impl(app: &AppHandle, state: &Arc<AppState>) -> Result<ReadSta
 }
 
 fn test_voice_impl(app: &AppHandle, state: &Arc<AppState>) -> Result<ReadStatus, String> {
-    speak_text(app, state, "Read This is ready.")
+    speak_text(app, state, "Readtis is ready.")
 }
 
 fn speak_text(app: &AppHandle, state: &Arc<AppState>, text: &str) -> Result<ReadStatus, String> {
@@ -361,7 +442,7 @@ fn synthesize_edge_tts_python(text: &str, settings: &AppSettings) -> Result<Vec<
     let root = find_project_root().ok_or_else(|| "Could not find python_deps.".to_string())?;
     let python = find_python_executable().ok_or_else(|| "Could not find Python.".to_string())?;
     let output = std::env::temp_dir().join(format!(
-        "read-this-edge-{}.mp3",
+        "readtis-edge-{}.mp3",
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map_err(|e| e.to_string())?
@@ -595,6 +676,7 @@ fn set_status(app: &AppHandle, state: &Arc<AppState>, status: ReadStatus) {
     if let Ok(mut current) = state.status.lock() {
         *current = status.clone();
     }
+    update_indicator_window(app, &status);
     let _ = app.emit("status-changed", status);
 }
 

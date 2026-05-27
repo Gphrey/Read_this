@@ -3,14 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Read This</title>
+    <title>Readtis</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <main class="shell">
+      <section id="onboarding" class="onboarding" aria-label="Welcome">
+        <div>
+          <p class="eyebrow">Welcome to Readtis</p>
+          <h1>Listen to highlighted text without breaking your flow.</h1>
+          <p>
+            Highlight text anywhere, press Ctrl+Alt+R, and Readtis will prepare a natural voice
+            and read it aloud once.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div>
+            <span>1</span>
+            <strong>Highlight text</strong>
+          </div>
+          <div>
+            <span>2</span>
+            <strong>Press Ctrl+Alt+R</strong>
+          </div>
+          <div>
+            <span>3</span>
+            <strong>Listen and respond</strong>
+          </div>
+        </div>
+
+        <div class="onboarding-actions">
+          <button id="onboardingStartBtn" class="primary">Start using Readtis</button>
+          <button id="onboardingTestBtn">Test voice</button>
+        </div>
+      </section>
+
       <section class="topbar">
         <div>
-          <h1>Read This</h1>
+          <h1>Readtis</h1>
           <p id="statusText">Starting...</p>
         </div>
         <span id="statusPill" class="pill">Idle</span>

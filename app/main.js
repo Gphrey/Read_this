@@ -14,6 +14,8 @@ const volumeOutput = document.querySelector("#volumeOutput");
 const fallbackInput = document.querySelector("#fallbackInput");
 const startMinimizedInput = document.querySelector("#startMinimizedInput");
 const hotkeyText = document.querySelector("#hotkeyText");
+const onboardingStartBtn = document.querySelector("#onboardingStartBtn");
+const onboardingTestBtn = document.querySelector("#onboardingTestBtn");
 
 let settings = null;
 let saveTimer = null;
@@ -30,6 +32,13 @@ function refreshOutputs() {
   volumeOutput.value = `${volumeInput.value}%`;
 }
 
+function refreshOnboarding() {
+  document.body.classList.toggle(
+    "onboarding-active",
+    settings && !settings.has_completed_onboarding,
+  );
+}
+
 function scheduleSave() {
   if (!settings) return;
   window.clearTimeout(saveTimer);
@@ -39,6 +48,7 @@ function scheduleSave() {
     settings.volume = Number(volumeInput.value);
     settings.enable_local_fallback = fallbackInput.checked;
     settings.start_minimized = startMinimizedInput.checked;
+    settings.has_completed_onboarding = Boolean(settings.has_completed_onboarding);
     await invoke("save_settings", { settings });
   }, 180);
 }
@@ -60,6 +70,7 @@ async function init() {
   volumeInput.value = settings.volume;
   fallbackInput.checked = settings.enable_local_fallback;
   startMinimizedInput.checked = settings.start_minimized;
+  refreshOnboarding();
   refreshOutputs();
 
   try {
@@ -87,6 +98,12 @@ async function init() {
 readBtn.addEventListener("click", () => call("read_selection"));
 stopBtn.addEventListener("click", () => call("stop_reading"));
 testBtn.addEventListener("click", () => call("test_voice"));
+onboardingTestBtn.addEventListener("click", () => call("test_voice"));
+onboardingStartBtn.addEventListener("click", async () => {
+  settings.has_completed_onboarding = true;
+  refreshOnboarding();
+  await invoke("save_settings", { settings });
+});
 
 for (const input of [voiceSelect, rateInput, volumeInput, fallbackInput, startMinimizedInput]) {
   input.addEventListener("input", () => {

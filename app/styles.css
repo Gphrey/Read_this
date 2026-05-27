@@ -22,6 +22,73 @@ body {
   gap: 18px;
 }
 
+.onboarding {
+  display: none;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid #d5e2ea;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+body.onboarding-active .onboarding {
+  display: grid;
+}
+
+.onboarding .eyebrow {
+  margin: 0 0 8px;
+  color: #176b87;
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.onboarding h1 {
+  max-width: 390px;
+  font-size: 26px;
+  line-height: 1.15;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.steps div {
+  min-height: 78px;
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  padding: 12px;
+  border: 1px solid #d9e0e8;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.steps span {
+  width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #176b87;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.steps strong {
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.onboarding-actions {
+  display: grid;
+  grid-template-columns: 1fr 112px;
+  gap: 10px;
+}
+
 .topbar {
   display: flex;
   align-items: flex-start;

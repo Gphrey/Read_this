@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Readtis Indicator</title>
+    <link rel="stylesheet" href="./indicator.css" />
+  </head>
+  <body>
+    <main id="indicator" class="indicator fetching">
+      <div class="mark" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="copy">
+        <strong id="title">Preparing voice</strong>
+        <p id="message">Fetching Edge TTS audio...</p>
+      </div>
+      <button id="stopBtn" type="button" title="Stop reading">Stop</button>
+    </main>
+
+    <script type="module" src="./indicator.js"></script>
+  </body>
+</html>

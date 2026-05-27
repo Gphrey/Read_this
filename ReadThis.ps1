@@ -95,7 +95,7 @@ $voice.Rate = [Math]::Max(-10, [Math]::Min(10, $Rate))
 $voice.Volume = [Math]::Max(0, [Math]::Min(100, $Volume))
 
 $notifyIcon = New-Object System.Windows.Forms.NotifyIcon
-$notifyIcon.Text = "Read This - Ctrl+Alt+R reads, Ctrl+Alt+S stops"
+$notifyIcon.Text = "Readtis - Ctrl+Alt+R reads, Ctrl+Alt+S stops"
 $notifyIcon.Icon = [System.Drawing.SystemIcons]::Information
 $notifyIcon.Visible = $true
 
@@ -174,24 +174,24 @@ function Start-ReadingSelection {
     try {
         $text = Get-SelectedText
         if ([string]::IsNullOrWhiteSpace($text)) {
-            Show-ReadThisTip "Read This" "No highlighted text was detected." ([System.Windows.Forms.ToolTipIcon]::Warning)
+            Show-ReadThisTip "Readtis" "No highlighted text was detected." ([System.Windows.Forms.ToolTipIcon]::Warning)
             return
         }
 
         $null = $voice.Speak("", 2)
         $null = $voice.Speak($text, 1)
-        Show-ReadThisTip "Read This" "Reading highlighted text."
+        Show-ReadThisTip "Readtis" "Reading highlighted text."
     } catch {
-        Show-ReadThisTip "Read This error" $_.Exception.Message ([System.Windows.Forms.ToolTipIcon]::Error)
+        Show-ReadThisTip "Readtis error" $_.Exception.Message ([System.Windows.Forms.ToolTipIcon]::Error)
     }
 }
 
 function Stop-Reading {
     try {
         $null = $voice.Speak("", 2)
-        Show-ReadThisTip "Read This" "Stopped."
+        Show-ReadThisTip "Readtis" "Stopped."
     } catch {
-        Show-ReadThisTip "Read This error" $_.Exception.Message ([System.Windows.Forms.ToolTipIcon]::Error)
+        Show-ReadThisTip "Readtis error" $_.Exception.Message ([System.Windows.Forms.ToolTipIcon]::Error)
     }
 }
 
@@ -201,7 +201,7 @@ $readItem.add_Click({
 
 $testItem.add_Click({
     $null = $voice.Speak("", 2)
-    $null = $voice.Speak("Read This is ready.", 1)
+    $null = $voice.Speak("Readtis is ready.", 1)
 })
 
 $stopItem.add_Click({
@@ -248,5 +248,5 @@ $exitItem.add_Click({
     [System.Windows.Forms.Application]::Exit()
 })
 
-Show-ReadThisTip "Read This is running" "Highlight text, press Ctrl+Alt+R to read it aloud. Press Ctrl+Alt+S to stop."
+Show-ReadThisTip "Readtis is running" "Highlight text, press Ctrl+Alt+R to read it aloud. Press Ctrl+Alt+S to stop."
 [System.Windows.Forms.Application]::Run($form)

@@ -23,7 +23,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     config.rate = 15;
 
     let mut client = connect()?;
-    let audio = client.synthesize("Read This Edge TTS probe.", &config)?;
+    let audio = client.synthesize("Readtis Edge TTS probe.", &config)?;
     println!("audio_bytes={}", audio.audio_bytes.len());
     Ok(())
 }

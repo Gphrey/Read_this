@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Read This",
+  "productName": "Readtis",
   "version": "0.1.0",
-  "identifier": "com.miebi.read-this",
+  "identifier": "com.motionphrey.readtis",
   "build": {
     "frontendDist": "../app"
   },
@@ -11,7 +11,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Read This",
+        "title": "Readtis",
         "width": 480,
         "height": 620,
         "resizable": false,
@@ -24,6 +24,14 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all"
+    "targets": "all",
+    "publisher": "Motionphrey",
+    "icon": [
+      "icons/icon.ico"
+    ],
+    "copyright": "Copyright (c) 2026 Motionphrey",
+    "category": "Productivity",
+    "shortDescription": "Read highlighted text aloud with natural Edge TTS voices.",
+    "longDescription": "Readtis is a Windows tray app that reads highlighted text aloud with natural Edge TTS voices."
   }
 }

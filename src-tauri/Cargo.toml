@@ -1,12 +1,12 @@
 [package]
-name = "read-this"
+name = "readtis"
 version = "0.1.0"
 description = "Read highlighted text aloud with Edge TTS"
-authors = ["Godfrey"]
+authors = ["Motionphrey"]
 edition = "2024"
 
 [[bin]]
-name = "read-this"
+name = "readtis"
 path = "src/main.rs"
 
 [build-dependencies]
