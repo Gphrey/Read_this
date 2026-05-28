@@ -9,6 +9,9 @@ use std::{
     time::Duration,
 };
 
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
+
 use base64::{engine::general_purpose, Engine as _};
 use clipboard_win::{formats, get_clipboard, set_clipboard, Clipboard};
 use msedge_tts::{
@@ -31,6 +34,9 @@ use windows_sys::Win32::UI::Input::KeyboardAndMouse::{
 
 const DEFAULT_VOICE: &str = "en-US-EmmaMultilingualNeural";
 const DEFAULT_HOTKEY: &str = "Ctrl+Alt+R";
+
+#[cfg(target_os = "windows")]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct AppSettings {
@@ -450,7 +456,8 @@ fn synthesize_edge_tts_python(text: &str, settings: &AppSettings) -> Result<Vec<
     ));
 
     let rate = format!("{:+}%", settings.rate);
-    let status = Command::new(&python)
+    let mut command = silent_command(&python);
+    let status = command
         .arg("-m")
         .arg("edge_tts")
         .arg("--text")
@@ -481,6 +488,15 @@ fn synthesize_edge_tts_python(text: &str, settings: &AppSettings) -> Result<Vec<
     } else {
         Ok(audio)
     }
+}
+
+fn silent_command(program: impl AsRef<std::ffi::OsStr>) -> Command {
+    let mut command = Command::new(program);
+    #[cfg(target_os = "windows")]
+    {
+        command.creation_flags(CREATE_NO_WINDOW);
+    }
+    command
 }
 
 fn synthesize_edge_tts_rust(text: &str, settings: &AppSettings) -> Result<Vec<u8>, String> {
@@ -522,15 +538,19 @@ fn find_project_root() -> Option<std::path::PathBuf> {
 }
 
 fn find_python_executable() -> Option<std::path::PathBuf> {
-    let bundled = std::path::PathBuf::from(
+    let bundled_python = std::path::PathBuf::from(
         r"C:\Users\Godfrey\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe",
     );
-    if bundled.exists() {
-        return Some(bundled);
+    let bundled_pythonw = bundled_python.with_file_name("pythonw.exe");
+    if bundled_pythonw.exists() {
+        return Some(bundled_pythonw);
+    }
+    if bundled_python.exists() {
+        return Some(bundled_python);
     }
 
-    for name in ["python.exe", "python", "py.exe", "py"] {
-        if Command::new(name)
+    for name in ["pythonw.exe", "pythonw", "python.exe", "python", "py.exe", "py"] {
+        if silent_command(name)
             .arg("--version")
             .stdin(Stdio::null())
             .stdout(Stdio::null())
@@ -609,8 +629,15 @@ fn speak_local_fallback(
          [void]$voice.Speak($text);"
     );
     let encoded_script = encode_powershell_command(&script);
-    let child = Command::new("powershell.exe")
-        .args(["-NoProfile", "-ExecutionPolicy", "Bypass", "-EncodedCommand", &encoded_script])
+    let mut command = silent_command("powershell.exe");
+    let child = command
+        .args([
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-EncodedCommand",
+            &encoded_script,
+        ])
         .stdin(Stdio::null())
         .stdout(Stdio::null())
         .stderr(Stdio::null())
