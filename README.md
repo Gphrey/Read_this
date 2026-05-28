@@ -75,51 +75,11 @@ What Readtis handles temporarily:
 
 Readtis does not intentionally save highlighted text, generated speech audio, or reading history. If the app or operating system crashes during a read, temporary OS files may remain until cleaned by Windows or deleted manually.
 
-## Screenshots And Video
-
-Keep README media in `docs/assets/` so links stay stable on GitHub.
-
-### Screenshot
-
-The current app screenshot is stored at:
-
-```text
-docs/assets/readtis-panel.png
-```
+## Preview
 
 ![Readtis control panel](docs/assets/readtis-panel.png)
 
-### Animated Demo
-
-For an inline demo, export the screen recording as a GIF:
-
-```text
-docs/assets/readtis-demo.gif
-```
-
-Then embed it:
-
-```markdown
-![Readtis demo](docs/assets/readtis-demo.gif)
-```
-
-### Video Demo
-
-GitHub README pages are most reliable when videos are linked from a thumbnail instead of embedded directly.
-
-The current video demo is stored at:
-
-```text
-docs/assets/readtis-demo.mp4
-```
-
-Open the demo video:
-
-```markdown
 [Watch the Readtis demo](docs/assets/readtis-demo.mp4)
-```
-
-For a more polished public repo, upload the video to a GitHub Release, YouTube, or Loom, then link a thumbnail to that URL.
 
 ## Build Locally
 
